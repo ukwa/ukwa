@@ -4,6 +4,12 @@
 
 # Home page
 GET     /                           controllers.Application.index()
+GET     /language/cy-GB             controllers.Application.switchLang_cy_GB()
+GET     /language/en-GB             controllers.Application.switchLang_en_GB()
+GET     /collection/                controllers.Application.viewCollections()
+GET     /collection/all             controllers.Application.viewAllCollections()
+GET     /collection/:id             controllers.Application.viewCollection(id:Long)
+GET     /target/:id                 controllers.Application.viewTarget(id:Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

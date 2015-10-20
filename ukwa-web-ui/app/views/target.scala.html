@@ -1,0 +1,9 @@
+@(t: uk.bl.wa.w3act.Target)
+
+@main("Target "+t.title) {
+
+    @t.title
+    
+    <a href="@{play.Play.application().configuration().getString("wayback.prefix")}/*/@t.primaryUrl.url">@t.primaryUrl.url</a>
+
+}

@@ -39,7 +39,6 @@ public class CollectionTree implements Serializable {
 		this.parentId = parent;
 		this.id = Long.parseLong(json.get("key").textValue().replace("\"", ""));
 		this.title = json.get("title").textValue();
-		Logger.info("Parsing "+title);
 		if( json.has("children")) {
 			for( JsonNode item : json.get("children")) {
 				this.children.add( new CollectionTree(item, this.id));
@@ -94,6 +93,7 @@ public class CollectionTree implements Serializable {
 	}
 
 	public void addCollectionDetails(JsonNode json) {
+		this.title  = json.get("name").textValue();
 		this.publish  = json.get("field_publish").booleanValue();
 		this.description = json.get("description").textValue();
 	}

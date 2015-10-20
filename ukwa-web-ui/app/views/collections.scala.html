@@ -1,0 +1,13 @@
+@(cts: List[uk.bl.wa.w3act.CollectionTree], all:Boolean)
+
+@main("Collections") {
+
+  <ul>
+  @for( ct <- cts ) {
+  	@if( ct.publish || all ) {
+      <li><a href="@routes.Application.viewCollection(ct.id)">@ct.title</a></li>
+    }
+  }
+  </ul>
+
+}

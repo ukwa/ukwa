@@ -30,15 +30,17 @@ public class W3ACTCache {
 	
 	private final static int timeout = 1000*1000;
 
-	private final static long expiration = 24; // hours
+	private static boolean forceExpiration = false;
+	
+	private static int maximumCollections = 10;
 	
 	private DB db;
 	
-	private HTreeMap<String, String> stats;
+	public HTreeMap<String, String> stats;
 	
-	private HTreeMap<Long, CollectionTree> collections;
+	public HTreeMap<Long, CollectionTree> collections;
 	
-	private HTreeMap<Long, Target> targets;
+	public HTreeMap<Long, Target> targets;
 
 	private ISO8601DateFormat df = new ISO8601DateFormat();
 	
@@ -53,25 +55,26 @@ public class W3ACTCache {
 	public W3ACTCache() {
 		// Set up the DB from a cache file:
 		db = DBMaker.fileDB(new File(tmpDir, "ukwa-cache.mapdb"))
-		.closeOnJvmShutdown().make();
+		.closeOnJvmShutdown()
+		.checksumEnable()
+		.make();
 
 		// Init caches:
 		stats = db.hashMapCreate(W3ACT_STATS).makeOrGet();
 		collections = db.hashMapCreate(W3ACT_COLLECTIONS).makeOrGet();
 		targets = db.hashMapCreate(W3ACT_TARGETS).makeOrGet();
+		
+		// And check:
+		//this.checkForUpdate();
+	}
+	
+	public void checkForUpdate() {
 		// Populate as needed:
-		if( cacheExpired() ) {
+		if( cacheExpired() || forceExpiration ) {
 			fillCache();
 		} else { 
 			Logger.info("Using cached collections, size: "+ collections.size());
 		}
-		for( Long id : collections.keySet() ) {
-			Logger.info("Collection ID "+collections.get(id).title);
-		}
-		for( Long id : targets.keySet() ) {
-			Logger.info("Target ID "+targets.get(id).title);
-		}
-		
 	}
 	
 	/*
@@ -128,31 +131,39 @@ public class W3ACTCache {
 				.setFollowRedirects(false)
 				.post(json);
 		WSResponse r = login.get(timeout);
-		Logger.info("Status: " + r.getStatus()+ " " + r.getStatusText());
 		if( r.getStatus() >= 400 ) {
 			Logger.error("Login failed.");
 			return;
 		}
+		Logger.info("Login succeeded.");
 		String cookie = r.getHeader("Set-Cookie");
 
-		// 
-		String url = act_url+"/api/collections";
-		JsonNode jcollections = getJsonFrom(cookie,url);
+		// Get the collections tree:
+		JsonNode jcollections = getJsonFrom(cookie, act_url+"/api/collections");
 		CollectionTree tct = new CollectionTree(jcollections);
 	
-		// Fill...
+		// Get all the collections (inc. details), and the targets.
 		List<CollectionTree> allCollections = tct.getAllCollections();
+		int numc = 0;
 		for( CollectionTree ct : allCollections ) {
 			JsonNode collection = getJsonFrom(cookie, act_url + "/api/collections/"+ct.id);
 			ct.addCollectionDetails(collection);
-			collections.put(ct.id, ct);
 
 			JsonNode jtargets = getJsonFrom(cookie, act_url+"/api/targets/bycollection/"+ct.id);
 			ct.addTargets(jtargets);
 			for( Target t : ct.targets ) {
 				targets.put( t.id, t );
 			}
-
+			
+			numc++;
+			if( W3ACTCache.maximumCollections > 0 && numc > W3ACTCache.maximumCollections ) { 
+				break;
+			}
+		}
+		
+		for( CollectionTree ct : tct.children ) {
+			// Record the top-level collections:
+			collections.put(ct.id, ct);
 		}
 
 		// Record the caching time and some stats:
@@ -178,5 +189,19 @@ public class W3ACTCache {
 		return jsonPromise.get(timeout);
 	}
 
+	/**
+	 * 
+	 */
+	public void close() {
+		if( ! db.isClosed() ) {
+			db.close();
+		}
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		close();
+	}
 
 }

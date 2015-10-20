@@ -1,0 +1,11 @@
+@(ct: uk.bl.wa.w3act.CollectionTree)
+
+@main("Collection "+ct.title) {
+
+    <ul>
+    @for( target <- ct.targets ) {
+      <li><a href="@routes.Application.viewTarget(target.id)">@target.title</a></li>
+    }
+    </ul>
+
+}
