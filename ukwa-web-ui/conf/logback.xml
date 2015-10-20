@@ -15,9 +15,10 @@
   <logger name="play" level="INFO" />
   <logger name="application" level="DEBUG" />
   
-  <!-- DEBUG logging during WS calls: -->
+  <!-- DEBUG logging during WS calls:
   <logger name="com.ning.http.client" level="DEBUG" />
   <logger name="play.api.libs.ws" level="DEBUG" />
+   -->
 
   <root level="ERROR">
     <appender-ref ref="STDOUT" />
