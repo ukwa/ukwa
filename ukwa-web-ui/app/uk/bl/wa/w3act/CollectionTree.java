@@ -104,5 +104,33 @@ public class CollectionTree implements Serializable {
 		}
 		
 	}
+	public Long getNumberOfTargets(boolean recursive) {
+	    return getNumberOfTargets(recursive, 0l);
+	}
 	
+	public Long getNumberOfTargets(boolean recursive, Long num) {
+	    if( this.targets != null ) num += this.targets.size();
+	    if( this.children != null && recursive) {
+		for( CollectionTree ct : this.children ) {
+		    num = ct.getNumberOfTargets(recursive, num);
+		}
+	    }
+	    return num;
+	}
+	
+	public Long getNumberOfCollections(boolean recursive) {
+	    return getNumberOfCollections(recursive, 0l);
+	}
+	
+	public Long getNumberOfCollections(boolean recursive, Long num) {
+	    if( this.children != null ) {
+		num += this.children.size();
+		if( recursive ) {
+		  for( CollectionTree ct : this.children ) {
+		    num = ct.getNumberOfCollections(recursive, num);
+		  }
+		}
+	    }
+	    return num;
+	}
 }

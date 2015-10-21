@@ -26,8 +26,6 @@ import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 
 public class W3ACTCache {
 	
-	private final String tmpDir = "/var/tmp/";// System.getProperty("java.io.tmpdir")
-	
 	private final static int timeout = 1000*1000;
 
 	private static boolean forceExpiration = false;
@@ -53,19 +51,14 @@ public class W3ACTCache {
 	private final static String TOTAL_TOP_COLLECTIONS = "total-top-collections";
 	
 	public W3ACTCache() {
-		// Set up the DB from a cache file:
-		db = DBMaker.fileDB(new File(tmpDir, "ukwa-cache.mapdb"))
-		.closeOnJvmShutdown()
-		.checksumEnable()
-		.make();
-
+	}
+	
+	public void init(DB db) {
+		this.db = db;
 		// Init caches:
 		stats = db.hashMapCreate(W3ACT_STATS).makeOrGet();
 		collections = db.hashMapCreate(W3ACT_COLLECTIONS).makeOrGet();
 		targets = db.hashMapCreate(W3ACT_TARGETS).makeOrGet();
-		
-		// And check:
-		//this.checkForUpdate();
 	}
 	
 	public void checkForUpdate() {
@@ -187,21 +180,6 @@ public class W3ACTCache {
 		        }
 		);
 		return jsonPromise.get(timeout);
-	}
-
-	/**
-	 * 
-	 */
-	public void close() {
-		if( ! db.isClosed() ) {
-			db.close();
-		}
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		super.finalize();
-		close();
 	}
 
 }

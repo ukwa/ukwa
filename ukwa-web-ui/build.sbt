@@ -10,6 +10,7 @@ libraryDependencies ++= Seq(
   javaJdbc,
   cache,
   javaWs,
+  "com.typesafe.akka" %% "akka-actor" % "2.3.13",
   "org.mapdb" % "mapdb" % "2.0-beta8"
 )
 

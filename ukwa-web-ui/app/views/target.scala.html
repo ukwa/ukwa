@@ -2,8 +2,20 @@
 
 @main(t.title) {
 
-    @t.title
+    <p>
+    @t.description
+    </p>
     
+    <ul>
+    <li>
     <a href="@{play.Play.application().configuration().getString("wayback.prefix")}/*/@t.primaryUrl.url">@t.primaryUrl.url</a>
+    </li>
+    <li><a href="@t.primaryUrl">Original site</a> (may now be offline)</li>
+    <li>Archived since/betweed DATES by USER at Organisation</li>
+    <li>Collections</li>
+    <li>Subjects</li>
+    <li>Instances</li>
+    <li>Search within</li>
+    </ul>
 
 }

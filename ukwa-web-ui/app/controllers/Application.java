@@ -59,8 +59,18 @@ public class Application extends Controller {
 		return ok(collections.render(getAllCollections(), true));
 	}
 	
+	private CollectionTree findCollectionById(Long id) {
+	    CollectionTree found = null;
+	    for( CollectionTree top : w3act.collections.values()) {
+		if( found == null) {
+		    found = top.find(id);
+		}
+	    }
+	    return found;
+	}
+	
 	public Result viewCollection(Long id) {
-		CollectionTree ct = w3act.collections.get(id);
+		CollectionTree ct = findCollectionById(id);
 		if( ct == null ) {
 			return notFound("No collection with ID "+id);
 		}

@@ -1,13 +1,22 @@
 @(cts: List[uk.bl.wa.w3act.CollectionTree], all:Boolean)
 
-@main("Collections") {
+@import includes._
 
-  <ul>
-  @for( ct <- cts ) {
-  	@if( ct.publish || all ) {
-      <li><a href="@routes.Application.viewCollection(ct.id)">@ct.title</a></li>
-    }
-  }
-  </ul>
+@scripts = {
+<!-- From include. -->
+<script>
+$(document).ready(function() {
+    $('.sortable-table').DataTable();
+} );
+</script>
+}
+
+@main("Special Collections", scripts) {
+
+  <p>
+  Special Collections are groups of websites brought together on a particular theme by librarians, curators and other specialists, often working in collaboration with key organisations in the field. They can be events-based (e.g The Olympic & Paralympic Games 2012), topical (e.g. The Credit Crunch Collection) or subject-oriented (e.g. The British Countryside Collections).
+  </p>
+  
+  @collectionsView(cts, all)
 
 }

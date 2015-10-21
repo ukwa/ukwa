@@ -1,0 +1,32 @@
+@(cts: List[uk.bl.wa.w3act.CollectionTree], all:Boolean)
+
+@import includes._
+
+<div class="collection-view">
+  <table id="collections-table" class="table table-striped table-bordered table-reponsive sortable-table">
+  <thead>
+  <tr>
+  <th>Title</th>
+  <th>Sub-collections</th>
+  <th>Websites</th>
+  <th>Publish</th>
+  </tr>
+  </thead>
+  @for( ct <- cts ) {
+    @if( ct.publish || all ) {
+        <tr>
+        <td><a href="@routes.Application.viewCollection(ct.id)">@ct.title</a></td>
+        <td>@ct.getNumberOfCollections(true)</td>
+        <td>@ct.getNumberOfTargets(true)</td>
+        <td>@ct.publish</td>
+        </tr>
+    }
+  }
+  </table>
+</div>
+
+<!-- 
+  <div class="col-md-6 col-xs-12">
+      collectionSummary(ct)
+  </div>
+ -->

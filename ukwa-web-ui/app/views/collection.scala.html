@@ -1,11 +1,42 @@
 @(ct: uk.bl.wa.w3act.CollectionTree)
 
-@main("Collection "+ct.title) {
+@import includes._
 
-    <ul>
-    @for( target <- ct.targets ) {
-      <li><a href="@routes.Application.viewTarget(target.id)">@target.title</a></li>
-    }
-    </ul>
+@scripts = {
+<!-- From include. -->
+<script>
+$(document).ready(function() {
+    $('.sortable-table').DataTable();
+} );
+</script>
+}
+
+@main(ct.title,scripts) {
+
+    <p>
+    @ct.description
+    </p>
+    
+@if( ct.children != null && ct.children.size() > 0 ) {
+  <h2>Sub-collections</h2>
+
+  @collectionsView(ct.children, true)
+}
+
+@if( ct.targets != null && ct.targets.size() > 0 ) {
+
+<h2>Web sites</h2>
+
+<div class="collection-targets-view">
+<div class="row" style="margin:0";>
+  @for( target <- ct.targets ) {
+     @targetThumbnail(target)
+  }
+</div>
+</div>
 
 }
+
+}
+
+  

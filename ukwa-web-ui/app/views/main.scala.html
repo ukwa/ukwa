@@ -1,4 +1,4 @@
-@(title: String)(content: Html)(implicit lang: Lang)
+@(title: String, scripts: Html = Html(""))(content: Html)(implicit lang: Lang)
 
 @import play.i18n._
 
@@ -13,6 +13,7 @@
 		<meta name="author" content="">
 		<link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.versioned("bootstrap/css/bootstrap.min.css")">
         <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css">
     </head>
     <body>
 		<nav class="navbar navbar-default" role="navigation">
@@ -32,21 +33,31 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">About<b class="caret"></b></a>
 							<ul class="dropdown-menu">
-								<li><a href="">Look Up URL</a></li>
+                                <li><a href="">Introduction to the UK Web Archive</a></li>
+                                <li><a href="">FAQ's</a></li>
+                                <li><a href="">Technical information</a></li>
+                                <li><a href="">Archive statistics</a></li>
+          @if( Messages.get("site.github_username") != null ) {
+            <li><a href="https://github.com/@Messages.get("site.github_username")">
+              <span class="username">@Messages.get("site.github")</span>
+            </a></li>
+          }
+
+          @if( Messages.get("site.twitter_username") != null ) {
+            <li><a href="https://twitter.com/@Messages.get("site.twitter_username")">
+              <span class="username">@Messages.get("site.twitter")</span>
+            </a></li>
+          }        
 							</ul>
 						</li>
-						<li><a href="@routes.Application.viewCollections()">Collections</a></li>
-   		@if( lang.equals(Lang.forCode("cy-GB")) ) {
-   		  <li><a href="@routes.Application.switchLang_en_GB()">Translate to English</a></li>
-   		} else {
-   		  <li><a href="@routes.Application.switchLang_cy_GB()">Translate to Welsh</a></li>
-   		}
-						
+                        <li><a href="@routes.Application.viewCollections()">Browse</a></li>
+                        <li><a href="">Search</a></li>
+                        <li><a href="">Nominate</a></li>
 					</ul>
-					<div class="navbar-right">
-						<span class="navbar-text" style="color:white">()&nbsp;&nbsp;</span>
-						<a class="btn btn-success navbar-btn" href="">Contact</a>
-					</div>
+					<ul class="nav navbar-nav navbar-right">
+					   <li><a href="http://britishlibrary.typepad.co.uk/webarchive/">Our Blog</a>
+                       <li><a href="mailto:@{Messages.get("site.email")}">Contact Us</a></li>
+					</ul>
 			</div><!-- /.nav-collapse -->
 		</nav>
 		<div class="container">
@@ -68,18 +79,12 @@
     @Messages.get("site.description")
     
       <div class="pull-right">
-        <a href="mailto:@{Messages.get("site.email")}">@{Messages.get("site.email")}</a>
-          @if( Messages.get("site.github_username") != null ) {
-            <a href="https://github.com/@Messages.get("site.github_username")">
-              <span class="username">@Messages.get("site.github_username")</span>
-            </a>
-          }
-
-          @if( Messages.get("site.twitter_username") != null ) {
-            <a href="https://twitter.com/@Messages.get("site.twitter_username")">
-              <span class="username">@Messages.get("site.twitter_username")</span>
-            </a>
-          }
+        @if( lang.equals(Lang.forCode("cy-GB")) ) {
+          <a href="@routes.Application.switchLang_en_GB()">Translate to English</a>
+        } else {
+          <a href="@routes.Application.switchLang_cy_GB()">Translate to Welsh</a>
+        }      
+      | Cookie warning | Notice and takedown | Terms and conditions | Privacy statement
       </div>
 
     </div>
@@ -91,7 +96,10 @@
 
         <script src="@routes.Assets.versioned("javascripts/jquery-1.9.1.min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.versioned("bootstrap/js/bootstrap.min.js")" type="text/javascript"></script>
-        
+        <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+
+@scripts
         
     </body>
 </html>

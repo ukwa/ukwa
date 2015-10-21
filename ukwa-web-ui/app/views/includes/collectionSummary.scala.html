@@ -1,0 +1,22 @@
+@(ct: uk.bl.wa.w3act.CollectionTree)
+
+<div class="media collection-thumbnail">
+  <div class="media-left pull-left">
+    <a href="@routes.Application.viewCollection(ct.id)">
+      <img class="media-object" src="@routes.Assets.versioned("images/thumbnail-default.jpg")" alt="Screenshot" title="Thumnail of @ct.title">
+    </a>
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">@ct.title</h4>
+    @if( ct.description != null ) {
+    <p>
+    @if( ct.description.length() > 160 ) {
+        @{ct.description.substring(0,160)+"..."}
+    } else {
+        @ct.description
+    } 
+    </p>
+    }
+    <a class="btn btn-default btn-sm" role="button" href="@routes.Application.viewCollection(ct.id)">View</a>
+  </div>
+</div>

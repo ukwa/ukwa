@@ -1,3 +1,10 @@
 footer {
 	margin-top: 2em;
 }
+
+.collection-thumbnail {
+	margin: 4px;
+	padding: 4px;
+	border: 1px solid #eee;
+}
+

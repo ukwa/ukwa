@@ -1,5 +1,7 @@
 site.title=UK Web Archive
 site.email=web-archivist@bl.uk
+site.github=On GitHub
+site.twitter=On Twitter
 site.github_username=ukwa
 site.twitter_username=UKWebArchive
 site.description=Understanding UK web history

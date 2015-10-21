@@ -1,0 +1,22 @@
+@(target: uk.bl.wa.w3act.Target)
+
+<div class="media collection-thumbnail">
+  <div class="media-left pull-left">
+    <a href="@routes.Application.viewTarget(target.id)">
+      <img class="media-object" src="@routes.Assets.versioned("images/thumbnail-default.jpg")" alt="Screenshot" title="Thumnail of @target.title">
+    </a>
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">@target.title</h4>
+    @if( target.description != null ) {
+    <p>
+    @if( target.description.length() > 160 ) {
+        @Html(target.description.substring(0,160)+"...")
+    } else {
+        @Html(target.description)
+    } 
+    </p>
+    }
+    <a class="btn btn-default btn-sm" role="button" href="@routes.Application.viewTarget(target.id)">View</a>
+  </div>
+</div>
