@@ -67,5 +67,9 @@ public class Target implements Serializable {
 			}
 		}
 	}
+	
+	public List<Instance> getAllInstances() {
+	    return WaybackClient.getWaybackInstances(primaryUrl.url);
+	}
 
 }

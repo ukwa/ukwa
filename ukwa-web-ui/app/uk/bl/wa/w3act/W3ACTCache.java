@@ -30,7 +30,7 @@ public class W3ACTCache {
 
 	private static boolean forceExpiration = false;
 	
-	private static int maximumCollections = 10;
+	private static int maximumCollections = -1;
 	
 	private DB db;
 	

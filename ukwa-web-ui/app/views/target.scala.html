@@ -3,7 +3,7 @@
 @main(t.title) {
 
     <p>
-    @t.description
+    @Html(t.description)
     </p>
     
     <ul>
@@ -16,6 +16,13 @@
     <li>Subjects</li>
     <li>Instances</li>
     <li>Search within</li>
+    </ul>
+
+<h3>Instances</h3>    
+    <ul>
+    @for( i <- t.getAllInstances() ) {
+        <li>@i.waybackTimestamp</li>
+    }
     </ul>
 
 }
