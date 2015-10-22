@@ -68,8 +68,26 @@ public class Target implements Serializable {
 		}
 	}
 	
-	public List<Instance> getAllInstances() {
-	    return WaybackClient.getWaybackInstances(primaryUrl.url);
+	public List<Instance> getAllWaybackInstances() {
+	    List<Instance> allWaybackInstances = WaybackClient.getWaybackInstances(primaryUrl.url);
+	    return allWaybackInstances;
+	}
+	
+	public List<Instance> getInstances() {
+	    List<Instance> allWaybackInstances = WaybackClient.getWaybackInstances(primaryUrl.url);
+	    int total = allWaybackInstances.size();
+	    
+	    if( total < 20 ) {
+		return allWaybackInstances;
+	    }
+	    
+	    // Otherwise, downsample:
+	    List<Instance> sample = new ArrayList<Instance>();
+	    for( int i = 0; i < total; i = i + total/20 ) {
+		sample.add(allWaybackInstances.get(i));
+	    }
+	    return sample;
+	    
 	}
 
 }

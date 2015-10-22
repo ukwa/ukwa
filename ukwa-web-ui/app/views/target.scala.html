@@ -18,10 +18,10 @@
     <li>Search within</li>
     </ul>
 
-<h3>Instances</h3>    
+    <h3>Instances</h3>    
     <ul>
-    @for( i <- t.getAllInstances() ) {
-        <li>@i.waybackTimestamp</li>
+    @for( i <- t.getInstances() ) {
+        <li><a href="@i.getPlaybackUrl()">@i.timestamp.format("dd MMM YYYY")</a></li>
     }
     </ul>
 

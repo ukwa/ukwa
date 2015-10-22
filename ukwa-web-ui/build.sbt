@@ -11,7 +11,8 @@ libraryDependencies ++= Seq(
   cache,
   javaWs,
   "com.typesafe.akka" %% "akka-actor" % "2.3.13",
-  "org.mapdb" % "mapdb" % "2.0-beta8"
+  "org.mapdb" % "mapdb" % "2.0-beta8",
+  "org.netpreserve.commons" % "webarchive-commons" % "1.1.6"
 )
 
 // Play provides two styles of routers, one expects its actions to be injected, the
@@ -22,3 +23,5 @@ routesGenerator := InjectedRoutesGenerator
 EclipseKeys.preTasks := Seq(compile in Compile)
 
 fork in run := true
+
+resolvers += "Cloudera Hadoop" at "https://repository.cloudera.com/artifactory/cloudera-repos/"
