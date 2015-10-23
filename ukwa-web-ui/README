@@ -2,3 +2,18 @@ This is your new Play application
 =================================
 
 This file will be packaged with your application, when using `activator dist`.
+
+
+TODO
+----
+
+- W3ACT cache should spot errors and retry.
+- It should update collections as it goes along, probably.
+- Display Collection tree as a 'nested' list? Flat Bootstrap list but with depth-based indent.
+- Use this for thumbs? http://www.webarchive.org.uk/mementos/api/screenshot/http://www.webarchive.org.uk:80/wayback/archive/20120423060016/http://www.bl.uk/
+
+Later
+
+- Thumbnail-from-proxy-mode as part of our Waybacks
+- Hook that in for thumbnails and cache well (need a long-lived cache of these specific areas).
+- (could also be used in W3ACT)

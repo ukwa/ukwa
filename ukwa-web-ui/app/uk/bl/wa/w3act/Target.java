@@ -90,4 +90,7 @@ public class Target implements Serializable {
 	    
 	}
 
+	public String getPlaybackUrl() { 
+	    return WaybackClient.getPlaybackUrlFor(this);
+	}
 }

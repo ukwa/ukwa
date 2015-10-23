@@ -94,4 +94,8 @@ public class WaybackClient {
     public static String getPlaybackUrlFor(Instance i) {
 	return prefix+"/"+i.waybackTimestamp+"/"+i.url;
     }
+    
+    public static String getPlaybackUrlFor(Target t) {
+	return prefix+"/1990/"+t.primaryUrl.url;
+    }
 }

@@ -10,7 +10,7 @@
     <li>
     <a href="@{play.Play.application().configuration().getString("wayback.prefix")}/*/@t.primaryUrl.url">@t.primaryUrl.url</a>
     </li>
-    <li><a href="@t.primaryUrl">Original site</a> (may now be offline)</li>
+    <li><a href="@t.primaryUrl.url">Original site</a> (may now be offline)</li>
     <li>Archived since/betweed DATES by USER at Organisation</li>
     <li>Collections</li>
     <li>Subjects</li>
@@ -19,10 +19,15 @@
     </ul>
 
     <h3>Instances</h3>    
-    <ul>
+    
+    <div class="row" style="margin:0";>
     @for( i <- t.getInstances() ) {
-        <li><a href="@i.getPlaybackUrl()">@i.timestamp.format("dd MMM YYYY")</a></li>
+      <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6" style="padding: 4px;">        
+        <a href="@i.getPlaybackUrl()">
+            <img class="img-responsive img-rounded" style="border: 1px solid #ccc;" src="http://www.webarchive.org.uk/mementos/api/screenshot/@i.getPlaybackUrl()" alt="Screenshot of @t.title at @i.timestamp.format("dd MMM YYYY")" title="@t.title at @i.timestamp.format("dd MMM YYYY")">
+        </a>
+      </div>
     }
-    </ul>
+    </div>
 
 }
