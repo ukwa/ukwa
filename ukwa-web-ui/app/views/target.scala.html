@@ -2,6 +2,9 @@
 
 @main(t.title) {
 
+  <div class="row">
+    <div class="col-md-6 col-xs-12">
+
     <p>
     @Html(t.description)
     </p>
@@ -18,16 +21,21 @@
     <li>Search within</li>
     </ul>
 
-    <h3>Instances</h3>    
-    
-    <div class="row" style="margin:0";>
-    @for( i <- t.getInstances() ) {
-      <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6" style="padding: 4px;">        
-        <a href="@i.getPlaybackUrl()">
-            <img class="img-responsive img-rounded" style="border: 1px solid #ccc;" src="http://www.webarchive.org.uk/mementos/api/screenshot/@i.getPlaybackUrl()" alt="Screenshot of @t.title at @i.timestamp.format("dd MMM YYYY")" title="@t.title at @i.timestamp.format("dd MMM YYYY")">
-        </a>
-      </div>
-    }
     </div>
+    <div id="instances" class="col-md-6 col-xs-12">
+
+    <ul>
+    @for( (i, index) <- t.getInstances().zipWithIndex ) {
+      <li class="thumb @if(index==0){ thumb-first } @if(index%2==0){ thumb-odd } else { thumb-even }">        
+        <span class="thumb-date">@i.timestamp.format("dd MMM YYYY")</span>
+        <a href="@i.getPlaybackUrl()">
+            <img class="img-responsive img-rounded" src="http://www.webarchive.org.uk/mementos/api/screenshot/@i.getPlaybackUrl()" alt="Screenshot of @t.title from @i.timestamp.format("dd MMM YYYY")" title="@t.title from @i.timestamp.format("dd MMM YYYY")">
+        </a>
+      </li>
+    }
+    </ul>
+    
+    </div>
+  </div>
 
 }

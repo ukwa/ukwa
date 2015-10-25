@@ -27,6 +27,9 @@ public class CollectionTree implements Serializable {
 	public String description;
 	public List<Target> targets = new ArrayList<Target>();
 
+	protected CollectionTree() {
+	}
+	
 	public CollectionTree( JsonNode json ) {
 		this.id = -1;
 		this.title = "ROOT";

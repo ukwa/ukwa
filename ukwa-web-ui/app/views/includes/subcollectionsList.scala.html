@@ -1,0 +1,18 @@
+@(cts: List[uk.bl.wa.w3act.CollectionTree], indent:String)
+
+@for( ct <- cts ) {
+   <li class="list-group-item">
+     @Html(indent)
+     @if( ct.children != null && ct.children.size() > 0 ) {
+     <a data-toggle="collapse" class="collection-tree-toggle pull-right" data-target="#collapse-ct@ct.id">
+     <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+     </a>
+     }
+     &nbsp;<a href="@routes.Application.viewCollection(ct.id)">@ct.title</a> (@ct.getNumberOfTargets(true))
+   </li>
+      @if( ct.children != null && ct.children.size() > 0 ) {
+     <div id="collapse-ct@ct.id" class="collapse in">
+          @subcollectionsList(ct.children, indent + "&nbsp;&nbsp;&nbsp;")
+     </div>
+      }
+}

@@ -1,16 +1,10 @@
 package uk.bl.wa.w3act;
 
-import java.io.File;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentNavigableMap;
-import java.util.concurrent.TimeUnit;
-
 import org.mapdb.DB;
-import org.mapdb.DBMaker;
 import org.mapdb.HTreeMap;
 
 import play.Logger;
@@ -171,7 +165,7 @@ public class W3ACTCache {
 	
 	private static JsonNode getJsonFrom(String cookie, String url) {
 		Logger.info("Getting "+url);
-		Promise<JsonNode> jsonPromise = WS.url(url).setHeader("Cookie", cookie).get().map(
+		Promise<JsonNode> jsonPromise = WS.url(url).setRequestTimeout(timeout).setHeader("Cookie", cookie).get().map(
 		        new Function<WSResponse, JsonNode>() {
 		            public JsonNode apply(WSResponse response) {
 		                JsonNode json = response.asJson();

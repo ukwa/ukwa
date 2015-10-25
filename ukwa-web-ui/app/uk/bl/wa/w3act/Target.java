@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
  */
 public class Target implements Serializable {
 
-	private static final long serialVersionUID = 5978088401293495160L;
+	private static final long serialVersionUID = 5978088401293496160L;
 
 	private ISO8601DateFormat df = new ISO8601DateFormat();
 
@@ -34,13 +34,40 @@ public class Target implements Serializable {
 	public Date endDate;
 	public TargetUrl primaryUrl = null;
 	public List<TargetUrl> additionalUrls = new ArrayList<TargetUrl>();
+	public boolean isOpenAccess = true;
 
 
+	/*
+...
+"field_hidden": false,
+"field_key_site": false,
+"field_wct_id": 34078727,
+"field_spt_id": 147114,
+"nominating_organisation": 
+{
+
+    "id": 1,
+    "createdAt": 1358261596000,
+    "updatedAt": 1423490802527,
+    "url": "act-101",
+    "title": "The British Library",
+    "field_abbreviation": "BL"
+
+},
+...
+	 */
+	
 	public Target(JsonNode json) {
 		this.id = json.get("id").longValue();
 		this.title = json.get("title").textValue();
 		this.description = json.get("description").textValue();
 		this.language = json.get("language").textValue();
+		String licenseStatus = json.get("licenseStatus").textValue();
+		if( "GRANTED".equals(licenseStatus)) {
+		    this.isOpenAccess = true;
+		} else {
+		    this.isOpenAccess = false;
+		}
 		
 		// Start date:
 		this.startDateText = json.get("crawlStartDateISO").textValue();

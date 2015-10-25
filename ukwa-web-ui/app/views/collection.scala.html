@@ -1,4 +1,4 @@
-@(ct: uk.bl.wa.w3act.CollectionTree)
+@(ctv: uk.bl.wa.w3act.view.CollectionTreeView)
 
 @import includes._
 
@@ -11,31 +11,115 @@ $(document).ready(function() {
 </script>
 }
 
-@main(ct.title,scripts) {
+@main(ctv.ct.title,scripts) {
+
+  <div class="row">
+    <div class="col-md-4 col-xs-12">
 
     <p>
-    @Html(ct.description)
+    @Html(ctv.ct.description)
     </p>
     
-@if( ct.children != null && ct.children.size() > 0 ) {
-  <h2>Sub-collections</h2>
+    <table class="table table-striped">
+    <thead>
+    <tr><th colspan="2" class="text-center">Collection Statistics</th></tr>
+    </thead>
+    <tbody>
+    <tr><td>Total websites</td><td>@ctv.totalTargets</td></tr>
+    <tr><td>Total sub-sections</td><td>@ctv.ct.getNumberOfCollections(true)</td></tr>
+    @if( ! ctv.ct.publish && ctv.ct.parentId == -1 ) {
+    <tr><td>Published?</td><td>No</td></tr>
+    }
+    </tr>
+    </tbody>
+    </table>
 
-  @collectionsView(ct.children, true)
+@if( ctv.ct.children != null && ctv.ct.children.size() > 0 ) {
+  <ul id="collection-tree-list" class="list-group">
+  @subcollectionsList(ctv.ct.children, "")
+  </ul>
 }
 
-@if( ct.targets != null && ct.targets.size() > 0 ) {
+    </div>
+    <div class="col-md-8 col-xs-12">
 
-<h2>Web sites</h2>
+@if( ctv.ct.targets != null && ctv.ct.targets.size() > 0 ) {
+    
 
 <div class="collection-targets-view">
-<div class="row" style="margin:0";>
-  @for( target <- ct.targets ) {
+<div class="row">
+        <div class="col-sm-12">
+                <div class="input-group">
+                    <input type="text" class="form-control"  placeholder="Search" >
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>  
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Action <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <li><a href="#">Action</a></li>
+    <li><a href="#">Another action</a></li>
+    <li><a href="#">Something else here</a></li>
+    <li role="separator" class="divider"></li>
+    <li><a href="#">Separated link</a></li>
+  </ul>
+</span>
+                </div>
+        </div>
+</div>
+<div class="row collection-targets-thumbnails">
+  @for( target <- ctv.ct.targets ) {
      @targetThumbnail(target)
   }
 </div>
 </div>
 
+@if( ctv.totalPages > 1 ) {
+<div class="text-center">
+<nav>
+  <ul class="pagination">
+    <li>
+      <a href="@routes.Application.viewCollection(ctv.ct.id, 1, ctv.pageSize, ctv.filter )" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    @if( ctv.morePagesBelow ) {
+    <li class="disabled">
+      <span>
+        <span aria-hidden="true">...</span>
+      </span>
+    </li>
+    }
+    @for( i <- ctv.pagerStart to ctv.pagerEnd )  {
+    <li @if(ctv.page == i){class="active"}><a href="@routes.Application.viewCollection(ctv.ct.id, i, ctv.pageSize, ctv.filter )">@i</a></li>
+    }
+    @if( ctv.morePagesAbove ) {
+    <li class="disabled">
+      <span>
+        <span aria-hidden="true">...</span>
+      </span>
+    </li>
+    }
+    <li>
+      <a href="@routes.Application.viewCollection(ctv.ct.id, ctv.totalPages, ctv.pageSize, ctv.filter )" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+</div>
 }
+
+<p class="text-center">
+Showing @ctv.pageStart-@ctv.pageEnd out of @ctv.totalTargets websites in this collection.
+</p>
+
+}
+
+</div>
+</div>
 
 }
 

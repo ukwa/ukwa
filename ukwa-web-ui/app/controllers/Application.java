@@ -12,6 +12,7 @@ import play.mvc.*;
 import uk.bl.wa.w3act.CollectionTree;
 import uk.bl.wa.w3act.Target;
 import uk.bl.wa.w3act.W3ACTCache;
+import uk.bl.wa.w3act.view.CollectionTreeView;
 import views.html.*;
 
 public class Application extends Controller {
@@ -69,12 +70,13 @@ public class Application extends Controller {
 	    return found;
 	}
 	
-	public Result viewCollection(Long id) {
+	public Result viewCollection(Long id, int page, int pageSize, String filter) {
 		CollectionTree ct = findCollectionById(id);
 		if( ct == null ) {
 			return notFound("No collection with ID "+id);
 		}
-		return ok(collection.render(ct));
+		CollectionTreeView ctv = new CollectionTreeView(ct,page,pageSize,filter);
+		return ok(collection.render(ctv));
 	}
 
     public Result index() {

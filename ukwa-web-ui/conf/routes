@@ -8,7 +8,7 @@ GET     /language/cy-GB             controllers.Application.switchLang_cy_GB()
 GET     /language/en-GB             controllers.Application.switchLang_en_GB()
 GET     /collection/                controllers.Application.viewCollections()
 GET     /collection/all             controllers.Application.viewAllCollections()
-GET     /collection/:id             controllers.Application.viewCollection(id:Long)
+GET     /collection/:id             controllers.Application.viewCollection(id:Long, page: Int ?= 1, pageSize: Int ?= 20, filter: String ?= "")
 GET     /target/:id                 controllers.Application.viewTarget(id:Long)
 
 # Map static resources from the /public folder to the /assets URL path
