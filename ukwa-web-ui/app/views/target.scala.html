@@ -26,11 +26,15 @@
 
     <ul>
     @for( (i, index) <- t.getInstances().zipWithIndex ) {
-      <li class="thumb @if(index==0){ thumb-first } @if(index%2==0){ thumb-odd } else { thumb-even }">        
-        <span class="thumb-date">@i.timestamp.format("dd MMM YYYY")</span>
+      <li class="thumb @if(index==0){ thumb-first } @if(index%2==0){ thumb-odd } else { thumb-even }">
+        <div class="thumbnail">
         <a href="@i.getPlaybackUrl()">
             <img class="img-responsive img-rounded" src="http://www.webarchive.org.uk/mementos/api/screenshot/@i.getPlaybackUrl()" alt="Screenshot of @t.title from @i.timestamp.format("dd MMM YYYY")" title="@t.title from @i.timestamp.format("dd MMM YYYY")">
         </a>
+        <div class="caption">
+        <span class="thumb-date">@i.timestamp.format("dd MMM YYYY")</span>
+        </div>
+        </div>
       </li>
     }
     </ul>

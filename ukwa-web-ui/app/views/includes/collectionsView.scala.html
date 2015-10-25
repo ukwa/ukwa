@@ -7,9 +7,8 @@
   <thead>
   <tr>
   <th>Title</th>
-  <th>Sub-collections</th>
+  <th>Sub-sections</th>
   <th>Websites</th>
-  <th>Publish</th>
   </tr>
   </thead>
   @for( ct <- cts ) {
@@ -18,7 +17,6 @@
         <td><a href="@routes.Application.viewCollection(ct.id)">@ct.title</a></td>
         <td>@ct.getNumberOfCollections(true)</td>
         <td>@ct.getNumberOfTargets(true)</td>
-        <td>@ct.publish</td>
         </tr>
     }
   }

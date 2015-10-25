@@ -160,6 +160,7 @@ public class W3ACTCache {
 		stats.put(TOTAL_TOP_COLLECTIONS, ""+collections.size());
 		// And commit:
 		db.commit();
+		Logger.info("Data synced and committed.");
 	}
 	
 	
