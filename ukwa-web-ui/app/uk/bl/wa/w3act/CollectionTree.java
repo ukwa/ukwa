@@ -5,7 +5,9 @@ package uk.bl.wa.w3act;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import play.Logger;
 
@@ -107,25 +109,38 @@ public class CollectionTree implements Serializable {
 		}
 		
 	}
-	public Long getNumberOfTargets(boolean recursive) {
-	    return getNumberOfTargets(recursive, 0l);
+	
+	public Long getNumberOfOpenAccessTargets(boolean recursive) {
+	    Set<Long> ids = getNumberOfTargets(recursive, false, new HashSet<Long>());
+	    return (long) ids.size();
 	}
 	
-	public Long getNumberOfTargets(boolean recursive, Long num) {
-	    if( this.targets != null ) num += this.targets.size();
-	    if( this.children != null && recursive) {
-		for( CollectionTree ct : this.children ) {
-		    num = ct.getNumberOfTargets(recursive, num);
+	public Long getNumberOfTargets(boolean recursive) {
+	    Set<Long> ids = getNumberOfTargets(recursive, true, new HashSet<Long>());
+	    return (long) ids.size();
+	}
+	
+	private Set<Long> getNumberOfTargets(boolean recursive, boolean all, Set<Long> ids) {
+	    if( this.targets != null ) {
+		for( Target t : this.targets ) {
+		    if( t.isOpenAccess || all ) {
+			ids.add(t.id);
+		    }
 		}
 	    }
-	    return num;
+	    if( this.children != null && recursive) {
+		for( CollectionTree ct : this.children ) {
+		    ids = ct.getNumberOfTargets(recursive, all, ids);
+		}
+	    }
+	    return ids;
 	}
 	
 	public Long getNumberOfCollections(boolean recursive) {
 	    return getNumberOfCollections(recursive, 0l);
 	}
 	
-	public Long getNumberOfCollections(boolean recursive, Long num) {
+	private Long getNumberOfCollections(boolean recursive, Long num) {
 	    if( this.children != null ) {
 		num += this.children.size();
 		if( recursive ) {

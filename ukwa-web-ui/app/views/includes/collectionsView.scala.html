@@ -9,14 +9,16 @@
   <th>Title</th>
   <th>Sub-sections</th>
   <th>Websites</th>
+  <th>Open Access Websites</th>
   </tr>
   </thead>
   @for( ct <- cts ) {
     @if( ct.publish || all ) {
         <tr>
-        <td><a href="@routes.Application.viewCollection(ct.id)">@ct.title</a></td>
+        <td@if( !ct.publish) { class="unpublished-collection-link"}><a href="@routes.Application.viewCollection(ct.id)">@ct.title</a>@if( !ct.publish) {&nbsp;<i>unpublished</i>}</td>
         <td>@ct.getNumberOfCollections(true)</td>
         <td>@ct.getNumberOfTargets(true)</td>
+        <td>@ct.getNumberOfOpenAccessTargets(true)</td>
         </tr>
     }
   }

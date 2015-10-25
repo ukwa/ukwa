@@ -2,6 +2,18 @@ footer {
 	margin-top: 2em;
 }
 
+.unpublished-collection-link {
+	opacity: 0.8;
+	color: #999;
+}
+
+#collection-tree-list .collection-tree-toggle {
+   text-decoration: none;
+}
+#collection-tree-list .collection-tree-toggle.collapsed .glyphicon:before {
+    content: "\e079"; 
+}
+
 .collection-targets-thumbnails {
 	margin-top: 1em;
 }
@@ -75,10 +87,4 @@ footer {
 
 #instances img {
 	border: 1px solid #ccc;
-}
-#collection-tree-list .collection-tree-toggle {
-   text-decoration: none;
-}
-#collection-tree-list .collection-tree-toggle.collapsed .glyphicon:before {
-    content: "\e079"; 
 }

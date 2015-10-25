@@ -26,6 +26,7 @@ $(document).ready(function() {
     </thead>
     <tbody>
     <tr><td>Total websites</td><td>@ctv.totalTargets</td></tr>
+    <tr><td>Open access websites</td><td>@ctv.ct.getNumberOfOpenAccessTargets(true)</td></tr>
     <tr><td>Total sub-sections</td><td>@ctv.ct.getNumberOfCollections(true)</td></tr>
     @if( ! ctv.ct.publish && ctv.ct.parentId == -1 ) {
     <tr><td>Published?</td><td>No</td></tr>
