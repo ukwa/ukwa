@@ -4,7 +4,7 @@
 <div class="thumbnail">
 <a href="@routes.Application.viewTarget(target.id)">
   @if( target.isOpenAccess ) {
-    <img class="img-responsive img-rounded" src="http://www.webarchive.org.uk/mementos/api/screenshot/@target.getPlaybackUrl()" alt="Screenshot of @target.title" title="@target.title">
+    <img class="img-responsive img-rounded" src="@routes.ScreenshotProxyController.screenshot(target.getPlaybackUrl())" alt="Screenshot of @target.title" title="@target.title">
   } else {
     <img class="img-responsive img-rounded" src="@routes.Assets.versioned("images/thumbnail-default.jpg")" alt="Screenshot" title="@target.title">
   }
