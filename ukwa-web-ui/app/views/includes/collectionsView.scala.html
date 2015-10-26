@@ -7,9 +7,8 @@
   <thead>
   <tr>
   <th>Title</th>
-  <th>Sub-sections</th>
-  <th>Websites</th>
-  <th>Open Access Websites</th>
+  <th>Sections</th>
+  <th>Websites (Open Access)</th>
   </tr>
   </thead>
   @for( ct <- cts ) {
@@ -17,8 +16,7 @@
         <tr>
         <td@if( !ct.publish) { class="unpublished-collection-link"}><a href="@routes.Application.viewCollection(ct.id)">@ct.title</a>@if( !ct.publish) {&nbsp;<i>unpublished</i>}</td>
         <td>@ct.getNumberOfCollections(true)</td>
-        <td>@ct.getNumberOfTargets(true)</td>
-        <td>@ct.getNumberOfOpenAccessTargets(true)</td>
+        <td>@ct.getNumberOfTargets(true) (@ct.getNumberOfOpenAccessTargets(true))</td>
         </tr>
     }
   }
