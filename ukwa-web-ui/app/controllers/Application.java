@@ -14,6 +14,7 @@ import uk.bl.wa.w3act.Target;
 import uk.bl.wa.w3act.W3ACTCache;
 import uk.bl.wa.w3act.view.CollectionTreeView;
 import views.html.*;
+import views.html.collections;
 
 public class Application extends Controller {
 	

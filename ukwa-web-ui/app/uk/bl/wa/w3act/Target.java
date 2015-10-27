@@ -62,12 +62,16 @@ public class Target implements Serializable {
 		this.title = json.get("title").textValue();
 		this.description = json.get("description").textValue();
 		this.language = json.get("language").textValue();
-		String licenseStatus = json.get("licenseStatus").textValue();
-		if( "GRANTED".equals(licenseStatus)) {
-		    this.isOpenAccess = true;
-		} else {
-		    this.isOpenAccess = false;
+		this.isOpenAccess = false;
+		// Is there an active licence?
+		JsonNode licensesJson = json.get("licenses");
+		for( JsonNode licenseJson : licensesJson) {
+		    if( licenseJson.get("id").intValue() > 0 ) {
+			this.isOpenAccess = true;
+		    }
 		}
+		// This only really works if the W3ACT permissions process has been used.
+		//String licenseStatus = json.get("licenseStatus").textValue();
 		
 		// Start date:
 		this.startDateText = json.get("crawlStartDateISO").textValue();
@@ -120,4 +124,16 @@ public class Target implements Serializable {
 	public String getPlaybackUrl() { 
 	    return WaybackClient.getPlaybackUrlFor(this);
 	}
+
+	@Override
+	public String toString() {
+	    return "Target [df=" + df + ", id=" + id + ", title=" + title
+		    + ", description=" + description + ", language=" + language
+		    + ", startDateText=" + startDateText + ", startDate="
+		    + startDate + ", endDateText=" + endDateText + ", endDate="
+		    + endDate + ", primaryUrl=" + primaryUrl
+		    + ", additionalUrls=" + additionalUrls + ", isOpenAccess="
+		    + isOpenAccess + "]";
+	}
+	
 }

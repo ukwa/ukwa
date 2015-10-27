@@ -136,8 +136,7 @@ public class W3ACTCache {
 			JsonNode collection = getJsonFrom(cookie, act_url + "/api/collections/"+ct.id);
 			ct.addCollectionDetails(collection);
 
-			JsonNode jtargets = getJsonFrom(cookie, act_url+"/api/targets/bycollection/"+ct.id);
-			ct.addTargets(jtargets);
+			addTargetsToCollection(act_url,cookie,ct);
 			for( Target t : ct.targets ) {
 				targets.put( t.id, t );
 			}
@@ -163,8 +162,13 @@ public class W3ACTCache {
 		Logger.info("Data synced and committed.");
 	}
 	
+	protected static void addTargetsToCollection(String act_url, String cookie, CollectionTree ct) {
+		JsonNode jtargets = getJsonFrom(cookie, act_url+"/api/targets/bycollection/"+ct.id);
+		ct.addTargets(jtargets);
+	}
 	
-	private static JsonNode getJsonFrom(String cookie, String url) {
+	
+	protected static JsonNode getJsonFrom(String cookie, String url) {
 		Logger.info("Getting "+url);
 		Promise<JsonNode> jsonPromise = WS.url(url).setRequestTimeout(timeout).setHeader("Cookie", cookie).get().map(
 		        new Function<WSResponse, JsonNode>() {

@@ -71,6 +71,27 @@ public class CollectionTree implements Serializable {
 	    }
 	}
 	
+	/**
+	 * Recursively hunt for a particular target
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public Target findTarget( long id ) {
+	    for( Target t : this.targets ) {
+		if( t.id == id ) {
+		    return t;
+		}
+	    }
+	    for( CollectionTree child : children ) {
+		Target t = child.findTarget(id);
+		if( t != null ) {
+		    return t;
+		}
+	    }
+	    return null;
+	}
+	
 	public List<Long> getAllCollectionsIds() {
 		return getAllCollectionsIdsRecursive( new ArrayList<Long>());
 	}

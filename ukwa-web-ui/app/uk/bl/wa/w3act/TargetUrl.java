@@ -14,4 +14,10 @@ public class TargetUrl implements Serializable {
 		this.url = url;
 		this.isSeed = isSeed;
 	}
+
+	@Override
+	public String toString() {
+	    return "TargetUrl [url=" + url + ", isSeed=" + isSeed + "]";
+	}
+	
 }
