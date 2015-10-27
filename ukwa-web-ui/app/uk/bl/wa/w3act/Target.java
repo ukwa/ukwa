@@ -127,7 +127,7 @@ public class Target implements Serializable {
 
 	@Override
 	public String toString() {
-	    return "Target [df=" + df + ", id=" + id + ", title=" + title
+	    return "Target [id=" + id + ", title=" + title
 		    + ", description=" + description + ", language=" + language
 		    + ", startDateText=" + startDateText + ", startDate="
 		    + startDate + ", endDateText=" + endDateText + ", endDate="
