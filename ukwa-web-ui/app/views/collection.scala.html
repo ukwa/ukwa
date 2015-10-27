@@ -44,10 +44,7 @@ $(document).ready(function() {
     </div>
     <div class="col-md-8 col-xs-12">
 
-@if( ctv.ct.targets != null && ctv.ct.targets.size() > 0 ) {
-    
 
-<div class="collection-targets-view">
 @helper.form(routes.Application.submitCollectionView(ctv.ct.id)) {
     
   @defining(searchForm("collectionId")) { uidField =>
@@ -79,6 +76,9 @@ $(document).ready(function() {
         </div>
 </div>
 }
+
+@if( ctv.ct.targets != null && ctv.ct.targets.size() > 0 ) {    
+<div class="collection-targets-view">
 <div class="row collection-targets-thumbnails">
   @for( target <- ctv.ct.targets ) {
      @targetThumbnail(target)

@@ -5,6 +5,7 @@ package uk.bl.wa.w3act.view;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import play.Logger;
 import uk.bl.wa.w3act.CollectionTree;
@@ -14,7 +15,7 @@ import uk.bl.wa.w3act.Target;
  * @author andy
  *
  */
-public class CollectionTreeView extends CollectionTree {
+public class CollectionTreeView {
     
     public CollectionTree ct;
     public String filter;
@@ -46,9 +47,26 @@ public class CollectionTreeView extends CollectionTree {
 	this.morePagesAbove = false;
 	
 	// Filtering:
+	filterIt();
 	
 	// Paging:
 	pageIt();
+    }
+    
+    private void filterIt() {
+	if( filter == null || "".equals(filter)) {
+	    return;
+	}
+	// If there's a filter, filter on title:
+	Pattern pat = Pattern.compile(".*"+Pattern.quote(filter)+".*", Pattern.CASE_INSENSITIVE);
+	List<Target> tp = new ArrayList<Target>();
+	for( Target t : this.ct.targets ) {
+	    if( pat.matcher(t.title).matches()) {
+		tp.add(t);
+	    }
+	}
+	this.ct.targets = tp;
+	
     }
     
     private void pageIt() {
