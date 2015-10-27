@@ -1,4 +1,4 @@
-@(ctv: uk.bl.wa.w3act.view.CollectionTreeView)
+@(ctv: uk.bl.wa.w3act.view.CollectionTreeView, searchForm: Form[uk.bl.wa.w3act.forms.SearchForm])
 
 @import includes._
 
@@ -48,10 +48,18 @@ $(document).ready(function() {
     
 
 <div class="collection-targets-view">
+@helper.form(routes.Application.submitCollectionView(ctv.ct.id)) {
+    
+  @defining(searchForm("collectionId")) { uidField =>
+    <input type="hidden" name="@uidField.name" id="@uidField.id" value="@uidField.value">
+  }
+  
 <div class="row">
         <div class="col-sm-12">
                 <div class="input-group">
-                    <input type="text" class="form-control"  placeholder="Search" >
+  @defining(searchForm("filter")) { uidField =>
+    <input type="text" name="@uidField.name" id="@uidField.id" value="@uidField.value" class="form-control"  placeholder="Search">
+  }
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="submit">
                             <span class="glyphicon glyphicon-search"></span>
@@ -70,6 +78,7 @@ $(document).ready(function() {
                 </div>
         </div>
 </div>
+}
 <div class="row collection-targets-thumbnails">
   @for( target <- ctv.ct.targets ) {
      @targetThumbnail(target)

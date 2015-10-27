@@ -9,6 +9,7 @@ GET     /language/en-GB             controllers.Application.switchLang_en_GB()
 GET     /collection/                controllers.Application.viewCollections()
 GET     /collection/all             controllers.Application.viewAllCollections()
 GET     /collection/:id             controllers.Application.viewCollection(id:Long, page: Int ?= 1, pageSize: Int ?= 20, filter: String ?= "")
+POST    /collection/:id/submit      controllers.Application.submitCollectionView(id:Long)
 GET     /target/:id                 controllers.Application.viewTarget(id:Long)
 GET     /screenshot/*url            controllers.ScreenshotProxyController.screenshot(url:String)
 
