@@ -1,0 +1,17 @@
+sudo: false
+
+language: scala
+
+scala:
+  - 2.11.7
+
+jdk:
+  - oraclejdk8
+
+sbt_args: -XX:+CMSClassUnloadingEnabled
+
+script:
+- cd ukwa-web-ui && sbt -Dconfig.file=conf/dev.conf test
+
+notifications:
+  slack: ukwebarchive:oqbYOo0bd09bnSXn4hGR1aUk
