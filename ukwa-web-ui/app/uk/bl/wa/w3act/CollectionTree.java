@@ -42,7 +42,12 @@ public class CollectionTree implements Serializable {
 	
 	private CollectionTree( JsonNode json, long parent ) {
 		this.parentId = parent;
-		this.id = Long.parseLong(json.get("key").textValue().replace("\"", ""));
+		try {
+		    this.id = Long.parseLong(json.get("key").textValue().replace("\"", ""));
+		} catch( Exception e ) {
+		    Logger.info("Old string-accessor failed for ID, trying Long...");
+		}
+		this.id = json.get("key").longValue();
 		this.title = json.get("title").textValue();
 		if( json.has("children")) {
 			for( JsonNode item : json.get("children")) {
