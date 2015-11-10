@@ -45,8 +45,10 @@ public class W3ACTCacheTest {
 	    ct.addCollectionDetails(collectionsJson);
 	    
 	    // Load targets:
-	    JsonNode targetsJson = m.readTree(new File("test/data/magna-carta-collection-targets.json"));;
-	    ct.addTargets(targetsJson);
+	    JsonNode targetsJson = m.readTree(new File("test/data/magna-carta-collection-targets.json"));
+	    for( JsonNode targetJson : targetsJson) {
+		ct.addTarget(targetJson);
+	    }
 	    
 	    // Prints and tests
 	    Long numTargetsTotal = ct.getNumberOfTargets(true);
