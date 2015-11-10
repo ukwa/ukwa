@@ -129,11 +129,8 @@ public class CollectionTree implements Serializable {
 		this.description = json.get("description").textValue();
 	}
 
-	public void addTargets(JsonNode targets) {
-		for( JsonNode t :targets ) {
-			this.targets.add(new Target(t));
-		}
-		
+	public void addTarget(JsonNode target) {
+	    this.targets.add(new Target(target));
 	}
 	
 	public Long getNumberOfOpenAccessTargets(boolean recursive) {

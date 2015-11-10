@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import play.Logger;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -75,18 +77,22 @@ public class Target implements Serializable {
 		
 		// Start date:
 		this.startDateText = json.get("crawlStartDateISO").textValue();
-		try {
+		if( ! StringUtils.isEmpty(this.startDateText) ) {
+		    try {
 			this.startDate = df.parse(startDateText);
-		} catch (Exception e) {
+		    } catch (Exception e) {
 			Logger.warn("Could not parse start date string "+this.startDateText+" for Target "+id);
+		    }
 		}
 		
 		// End date:
 		this.endDateText = json.get("crawlEndDateISO").textValue();
-		try {
+		if( ! StringUtils.isEmpty(this.endDateText) ) {
+		    try {
 			this.endDate = df.parse(endDateText);
-		} catch (Exception e) {
+		    } catch (Exception e) {
 			Logger.warn("Could not parse end date string "+this.endDateText+" for Target "+id);
+		    }
 		}
 
 		// URLs

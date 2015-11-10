@@ -157,14 +157,17 @@ public class W3ACTCache {
 		stats.put(TOTAL_TARGETS, ""+targets.size());
 		stats.put(TOTAL_COLLECTIONS, ""+allCollections.size());
 		stats.put(TOTAL_TOP_COLLECTIONS, ""+collections.size());
-		// And commit:
+		// And do the final commit:
 		db.commit();
 		Logger.info("Data synced and committed.");
 	}
 	
 	protected static void addTargetsToCollection(String act_url, String cookie, CollectionTree ct) {
 		JsonNode jtargets = getJsonFrom(cookie, act_url+"/api/targets/bycollection/"+ct.id);
-		ct.addTargets(jtargets);
+		for( JsonNode tid : jtargets) {
+		    	JsonNode jtarget = getJsonFrom(cookie, act_url+"/api/targets/"+tid.longValue());
+			ct.addTarget(jtarget);
+		}
 	}
 	
 	
