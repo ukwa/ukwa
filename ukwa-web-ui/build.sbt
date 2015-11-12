@@ -11,7 +11,7 @@ libraryDependencies ++= Seq(
   cache,
   javaWs,
   "com.typesafe.akka" %% "akka-actor" % "2.3.13",
-  "org.mapdb" % "mapdb" % "2.0-beta8",
+  "org.mapdb" % "mapdb" % "2.0-beta10",
   "org.netpreserve.commons" % "webarchive-commons" % "1.1.6",
   "org.apache.httpcomponents" % "httpclient" % "4.3.6",
   "org.apache.httpcomponents" % "httpcore" % "4.3.3"

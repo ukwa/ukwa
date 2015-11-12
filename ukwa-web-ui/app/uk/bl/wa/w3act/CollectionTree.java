@@ -124,9 +124,10 @@ public class CollectionTree implements Serializable {
 	}
 
 	public void addCollectionDetails(JsonNode json) {
-		this.title  = json.get("name").textValue();
-		this.publish  = json.get("field_publish").booleanValue();
-		this.description = json.get("description").textValue();
+	    Logger.info("Adding collection details: "+json);
+	    this.title  = json.get("name").textValue();
+	    this.publish  = json.get("field_publish").booleanValue();
+	    this.description = json.get("description").textValue();
 	}
 
 	public void addTarget(JsonNode target) {
