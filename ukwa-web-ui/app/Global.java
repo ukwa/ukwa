@@ -12,7 +12,7 @@ import scala.concurrent.duration.Duration;
 
 public class Global extends GlobalSettings {
 	
-	private final String tmpDir = "/var/tmp/";// System.getProperty("java.io.tmpdir")
+	private final String defaultTmpDir = System.getProperty("java.io.tmpdir");
 
 	private Cancellable cacheChecker;
 	
@@ -22,6 +22,7 @@ public class Global extends GlobalSettings {
     @Override
 	public void onStart(Application app) {
       Logger.info("Application startup...");
+      String tmpDir = Play.application().configuration().getString("w3act.cache.tmp.dir", defaultTmpDir);
       // Set up the cache DB:
       db = DBMaker.fileDB(new File(tmpDir, "ukwa-cache.mapdb"))
   			.closeOnJvmShutdown()
