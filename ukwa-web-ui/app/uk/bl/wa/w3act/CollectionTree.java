@@ -30,6 +30,8 @@ public class CollectionTree implements Serializable {
 	public List<Target> targets = new ArrayList<Target>();
 
 	protected CollectionTree() {
+		this.id = -1;
+		this.title = "ROOT";
 	}
 	
 	public CollectionTree( JsonNode json ) {
@@ -45,7 +47,7 @@ public class CollectionTree implements Serializable {
 		try {
 		    this.id = Long.parseLong(json.get("key").textValue().replace("\"", ""));
 		} catch( Exception e ) {
-		    Logger.info("Old string-accessor failed for ID, trying Long...");
+		    // Ignore this old behaviour.
 		}
 		this.id = json.get("key").longValue();
 		this.title = json.get("title").textValue();
@@ -124,7 +126,6 @@ public class CollectionTree implements Serializable {
 	}
 
 	public void addCollectionDetails(JsonNode json) {
-	    Logger.info("Adding collection details: "+json);
 	    this.title  = json.get("name").textValue();
 	    this.publish  = json.get("field_publish").booleanValue();
 	    this.description = json.get("description").textValue();

@@ -1,6 +1,7 @@
 package uk.bl.wa.w3act;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -140,38 +141,42 @@ public class W3ACTCache {
 	CollectionTree tct = new CollectionTree(jcollections);
 
 	// Add all the top-level collections to the cache system:
+	int numc = 0;
 	for( CollectionTree ct : tct.children ) {
+	    // Add collection details and for the children too:
+	    addCollectionData(ct,cookie,act_url);
+
 	    // Record the top-level collections:
 	    collections.put(ct.id, ct);
-	}
-
-	// Get all the collections (inc. details), and the targets.
-	List<CollectionTree> allCollections = tct.getAllCollections();
-	int numc = 0;
-	for( CollectionTree ct : allCollections ) {
-	    JsonNode collection = getJsonFrom(cookie, act_url + "/api/collections/"+ct.id);
-	    ct.addCollectionDetails(collection);
-
-	    addTargetsToCollection(act_url,cookie,ct);
-
+	    
+	    // Stop if we're for stopping:
 	    numc++;
-	    if( W3ACTCache.maximumCollections > 0 && numc > W3ACTCache.maximumCollections ) { 
+	    if( W3ACTCache.maximumCollections > 0 && numc >= W3ACTCache.maximumCollections ) { 
 		break;
 	    }
-
 	    // Commit after each addition:
 	    db.commit();
 	}
+	
 
 	// Record the caching time and some stats:
 	stats.put(STATS_LAST_UPDATED, getNowISO8601());
 	stats.put(TOTAL_TARGETS, ""+targets.size());
-	stats.put(TOTAL_COLLECTIONS, ""+allCollections.size());
+	stats.put(TOTAL_COLLECTIONS, ""+tct.getAllCollections().size());
 	stats.put(TOTAL_TOP_COLLECTIONS, ""+collections.size());
 	// And do the final commit:
 	db.commit();
 	db.compact();
 	Logger.info("Data synced and committed.");
+    }
+    
+    private void addCollectionData(CollectionTree ct, String cookie, String act_url) {
+	    JsonNode collection = getJsonFrom(cookie, act_url + "/api/collections/"+ct.id);
+	    ct.addCollectionDetails(collection);
+	    addTargetsToCollection(act_url,cookie,ct);
+	    for( CollectionTree ctn : ct.children ) {
+		addCollectionData(ctn, cookie, act_url);
+	    }
     }
 
     protected void addTargetsToCollection(String act_url, String cookie, CollectionTree ct) {
