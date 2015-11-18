@@ -199,15 +199,26 @@ public class W3ACTCache {
 
     protected static JsonNode getJsonFrom(String cookie, String url) {
 	Logger.info("Getting "+url);
-	Promise<JsonNode> jsonPromise = WS.url(url).setRequestTimeout(timeout).setHeader("Cookie", cookie).get().map(
-		new Function<WSResponse, JsonNode>() {
-		    public JsonNode apply(WSResponse response) {
-			JsonNode json = response.asJson();
-			return json;
-		    }
+	while(true) {
+	    try {
+		Promise<JsonNode> jsonPromise = WS.url(url).setRequestTimeout(timeout).setHeader("Cookie", cookie).get().map(
+			new Function<WSResponse, JsonNode>() {
+			    public JsonNode apply(WSResponse response) {
+				JsonNode json = response.asJson();
+				return json;
+			    }
+			}
+			);
+		return jsonPromise.get(timeout);
+	    } catch( Exception e ) {
+		Logger.error("Exception while talking to W3ACT - sleeping for 15 seconds before retrying.",e);
+		try {
+		    Thread.sleep(15*1000);
+		} catch (InterruptedException e1) {
+		    Logger.error("Thread sleep was interrupted.",e);
 		}
-		);
-	return jsonPromise.get(timeout);
+	    }
+	}
     }
 
 }
