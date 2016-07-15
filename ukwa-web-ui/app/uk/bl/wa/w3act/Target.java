@@ -58,7 +58,9 @@ public class Target implements Serializable {
 },
 ...
 	 */
-	
+
+	Target() {}
+
 	public Target(JsonNode json) {
 		this.id = json.get("id").longValue();
 		this.title = json.get("title").textValue();
@@ -141,5 +143,8 @@ public class Target implements Serializable {
 		    + ", additionalUrls=" + additionalUrls + ", isOpenAccess="
 		    + isOpenAccess + "]";
 	}
-	
+
+    public long getId() {
+        return id;
+    }
 }

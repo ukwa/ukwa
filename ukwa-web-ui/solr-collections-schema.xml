@@ -919,7 +919,7 @@
      </similarity>
     -->
 
-  <field name="author" type="strings" indexed="false" multiValued="false"/>
+  <field name="author" type="string" indexed="false" multiValued="false"/>
   <field name="description" type="string" indexed="false" multiValued="false"/>
   <field name="endDate" type="tdate" indexed="false" multiValued="false"/>
   <field name="language" type="string" indexed="false" multiValued="false"/>
@@ -928,6 +928,7 @@
   <field name="startDate" type="tdate" indexed="false" multiValued="false"/>
   <field name="title" type="string" indexed="true" multiValued="false"/>
   <field name="type" type="string" indexed="true" multiValued="false"/>
-  <field name="url" type="string" indexed="false" multiValued="false"/>  
+  <field name="url" type="string" indexed="false" multiValued="false"/>
+  <field name="additionalUrl" type="string" indexed="false" multiValued="true"/>
 </schema>
 

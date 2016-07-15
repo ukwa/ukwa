@@ -1,16 +1,16 @@
 package controllers;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import play.*;
 import play.data.Form;
-import play.i18n.Lang;
 import play.mvc.*;
 import uk.bl.wa.w3act.CollectionTree;
+import uk.bl.wa.w3act.CollectionsDataSource;
+import uk.bl.wa.w3act.SolrCollectionsDataSource;
 import uk.bl.wa.w3act.Target;
 import uk.bl.wa.w3act.W3ACTCache;
 import uk.bl.wa.w3act.forms.SearchForm;
@@ -19,11 +19,11 @@ import views.html.*;
 
 public class Application extends Controller {
 
-    public static W3ACTCache w3act = new W3ACTCache();
+    public static CollectionsDataSource collectionsDataSource = new /*W3ACTCache()*/ SolrCollectionsDataSource();
 
 
     public Result viewTarget(Long id) {
-	Target t = w3act.targets.get(id);
+	Target t = collectionsDataSource.getTarget(id);
 	if( t == null ) {
 	    return notFound("No target with ID "+id);
 	}
@@ -42,13 +42,13 @@ public class Application extends Controller {
 
     private List<CollectionTree> getAllCollections() {
 	List<CollectionTree> top = new ArrayList<CollectionTree>();
-	for( CollectionTree ct : w3act.collections.values() ) {
+	for( CollectionTree ct : collectionsDataSource.getCollections().values() ) {
 	    top.add(ct);
 	}
 	// And sort by title:
 	Collections.sort(top, new Comparator<CollectionTree>(){
 	    public int compare(CollectionTree o1, CollectionTree o2){
-		return o1.title.compareToIgnoreCase(o2.title);
+			return (o1.title != null ? o1.title : "").compareToIgnoreCase(o2.title != null ? o2.title : "");
 	    }
 	});
 	return top;
@@ -64,7 +64,7 @@ public class Application extends Controller {
 
     private CollectionTree findCollectionById(Long id) {
 	CollectionTree found = null;
-	for( CollectionTree top : w3act.collections.values()) {
+	for( CollectionTree top : collectionsDataSource.getCollections().values()) {
 	    if( found == null) {
 		found = top.find(id);
 	    }

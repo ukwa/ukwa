@@ -23,7 +23,7 @@
     <li>Language: @t.language</li>
     <li>Additional URLs:
     @for( (u,i) <- t.additionalUrls.zipWithIndex ) {
-        <a href="@u.url">@i</a>&nbsp;
+        <a href="@u.url">@(i + 1)</a>&nbsp;
     }
     </li>
     <li>Collections</li>

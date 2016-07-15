@@ -67,6 +67,7 @@ else:
 					title=target["title"],
 					description=target["description"],
 					url=target["fieldUrls"][0]["url"],
+					additionalUrl=[t["url"] for t in target["fieldUrls"] if t["position"] > 0],
 					language=target["language"],
 					startDate=target["crawlStartDateISO"],
 					endDate=target["crawlEndDateISO"]

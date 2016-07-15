@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 public class CollectionTree implements Serializable {
 	
 	private static final long serialVersionUID = 3152090496542715791L;
-	
+
 	public long id;
 	public long parentId;
 	public String title;
@@ -57,7 +57,11 @@ public class CollectionTree implements Serializable {
 			}
 		}
 	}
-	
+
+	public long getId() {
+		return id;
+	}
+
 	/**
 	 * Recursively hunt for a particular point in the tree
 	 * 
