@@ -1,0 +1,48 @@
+<!--
+	logger.xml should be logback.xml in more recent versions of Play/Activator
+	Here we just capture basic error information to STDOUT and the application log file.
+	Check play/logback documentation for more advanced and fine-tuning options.
+-->
+
+<configuration>
+	<conversionRule conversionWord="coloredLevel" converterClass="play.api.Logger$ColoredLevel" />
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%coloredLevel - %logger - %message%n%xException</pattern>
+		</encoder>
+	</appender>
+
+	<!--
+	Log file details. See below for changing the logging level.
+	-->
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+		<file>/opt/ukwa/logs/ukwa.log</file>
+		<encoder>
+			<pattern>%date %coloredLevel %logger{15} - %message%n%xException{5}</pattern>
+		</encoder>
+	</appender>
+
+	<!--
+	The logger name is typically the Java/Scala package name.
+	This configures the log level to log at for a package and its children packages.
+	-->
+	<logger name="play" level="WARN" />
+	<logger name="application" level="INFO" />
+  
+	<!-- DEBUG logging during WS calls:
+	<logger name="com.ning.http.client" level="DEBUG" />
+	<logger name="play.api.libs.ws" level="DEBUG" />
+	-->
+
+	<root level="ERROR">
+		<appender-ref ref="STDOUT" />
+	</root>
+  
+  	<!--
+	Change logging levels (ERROR/DEBUG/INFO/etc.) for your log file here.
+	-->
+	<root level="ERROR">
+		<appender-ref ref="FILE" />
+	</root>
+</configuration>
