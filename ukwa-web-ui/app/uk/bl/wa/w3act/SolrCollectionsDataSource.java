@@ -59,13 +59,15 @@ public class SolrCollectionsDataSource implements CollectionsDataSource {
                 .map(url -> new TargetUrl((String)url, false))
                 .collect(Collectors.toList())
             : new ArrayList<>();
+        target.isOpenAccess = solrDocument.getFieldValues("licenses") != null && solrDocument.getFieldValues("licenses").size() > 0;
+
         return target;
     }
 
     protected static CollectionTree solrDocumentToCollectionTree(SolrDocument solrDocument){
         CollectionTree collectionTree = new CollectionTree();
         collectionTree.id = Long.parseLong((String)solrDocument.getFieldValue("id"));
-        collectionTree.parentId = solrDocument.getFieldValue("parent") == null ? 0 : Long.parseLong((String) solrDocument.getFieldValue("parent"));
+        collectionTree.parentId = solrDocument.getFieldValue("parentId") == null ? 0 : (Long)(solrDocument.getFieldValue("parentId"));
         collectionTree.title = (String)solrDocument.getFieldValue("name");
         collectionTree.publish = true; // Only publishable collections will be in the Solr index
         collectionTree.description = (String)solrDocument.getFieldValue("description");

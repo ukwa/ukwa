@@ -4,6 +4,57 @@ import configparser
 import codecs
 import solr
 
+def addCollection(c_id, parent_id):
+	col_url = actUrl + "/api/collections/%s" % c_id
+	col_req = requests.get(col_url, headers=headers)
+	col = json.loads(col_req.content.decode('utf8').encode('ascii', 'ignore'))
+	if col['field_publish'] == True:
+		print("Publishing...",c['title'])
+		
+		# add a document to the Solr index
+		s.add(id=col["id"],
+			type="collection",
+			name=col["name"],
+			description=col["description"],
+			parentId = parent_id
+			)
+		s.commit()
+		
+		# Look up all Targets within this Collection and add them.
+		t_url = actUrl + "/api/targets/bycollection/%s" % c_id
+		t_req = requests.get(t_url, headers=headers)
+		targets = json.loads(t_req.content.decode('utf8').encode('ascii', 'ignore'))			
+
+		for t in targets:
+			target_url = actUrl + "/api/targets/%s" % int(t)
+			print "target_url=" + target_url
+			target_req = requests.get(target_url, headers=headers)
+			target = json.loads(target_req.content.decode('utf8').encode('ascii', 'ignore'))
+			#target['collection'] = c_id
+														
+			# add a document to the Solr index
+			s.add(id=target["id"],
+				type="target",
+				parentId=c_id,
+				title=target["title"],
+				description=target["description"],
+				url=target["fieldUrls"][0]["url"],
+				additionalUrl=[t["url"] for t in target["fieldUrls"] if t["position"] > 0],
+				language=target["language"],
+				startDate=target["crawlStartDateISO"],
+				endDate=target["crawlEndDateISO"],
+				licenses = [l["id"] for l in target["licenses"]]
+				)		
+			s.commit()
+
+		# Add child collections
+		for cc in col["children"]:
+			addCollection(int(cc["id"]), c_id)
+	else:
+		print("Skipping...",c['title'])	
+		
+	return
+
 config = configparser.ConfigParser()
 config.read('act.cfg')
 
@@ -33,48 +84,7 @@ else:
 	
 	collections_tree = json.loads(all.content)
 	for c in collections_tree:
-		c_id = int(c['key'])
-		col_url = actUrl + "/api/collections/%s" % c_id
-		col_req = requests.get(col_url, headers=headers)
-		col = json.loads(col_req.content.decode('utf8').encode('ascii', 'ignore'))
-		if col['field_publish'] == True:
-			print("Publishing...",c['title'])
-			
-			# add a document to the Solr index
-			s.add(id=col["id"],
-				type="collection",
-				name=col["name"],
-				description=col["description"]
-				)
-			s.commit()
-			
-			# Look up all Targets with in this Collection and add them.
-			t_url = actUrl + "/api/targets/bycollection/%s" % c_id
-			t_req = requests.get(t_url, headers=headers)
-			targets = json.loads(t_req.content.decode('utf8').encode('ascii', 'ignore'))			
+		addCollection(int(c['key']), None)
+		
 
-			for t in targets:
-				target_url = actUrl + "/api/targets/%s" % int(t)
-				print "target_url=" + target_url
-				target_req = requests.get(target_url, headers=headers)
-				target = json.loads(target_req.content.decode('utf8').encode('ascii', 'ignore'))
-				#target['collection'] = c_id
-															
-				# add a document to the Solr index
-				s.add(id=target["id"],
-					type="target",
-					parentId=c_id,
-					title=target["title"],
-					description=target["description"],
-					url=target["fieldUrls"][0]["url"],
-					additionalUrl=[t["url"] for t in target["fieldUrls"] if t["position"] > 0],
-					language=target["language"],
-					startDate=target["crawlStartDateISO"],
-					endDate=target["crawlEndDateISO"]
-					)		
-				s.commit()
-
-		else:
-			print("Skipping...",c['title'])	
-
-
+	

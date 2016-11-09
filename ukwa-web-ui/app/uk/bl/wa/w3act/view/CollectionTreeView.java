@@ -6,8 +6,8 @@ package uk.bl.wa.w3act.view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
-import play.Logger;
 import uk.bl.wa.w3act.CollectionTree;
 import uk.bl.wa.w3act.Target;
 
@@ -17,12 +17,14 @@ import uk.bl.wa.w3act.Target;
 public class CollectionTreeView {
 
     public CollectionTree ct;
+    public List<Target> targets;
     public String filter;
     public int page;
     public int offset;
     public int pageSize;
     public int totalPages;
     public int totalTargets;
+    public int numFilteredTargets;
     public int pageStart;
     public int pageEnd;
     public int pagerStart;
@@ -39,7 +41,7 @@ public class CollectionTreeView {
         this.page = page;
         this.pageSize = pageSize;
         this.totalPages = 1;
-        this.totalTargets = ct.targets.size();
+        this.totalTargets = ct.getTargets().size();
         this.pageStart = 1;
         this.pageEnd = this.totalTargets;
         this.morePagesBelow = false;
@@ -48,44 +50,49 @@ public class CollectionTreeView {
         // Filtering:
         filterIt();
 
+        sortIt();
+
         // Paging:
         pageIt();
     }
 
     private void filterIt() {
         if(filter == null || "".equals(filter)) {
-            return;
+            targets = ct.getTargets();
         }
-        // If there's a filter, filter on title:
-        Pattern pat = Pattern.compile(".*" + Pattern.quote(filter) + ".*", Pattern.CASE_INSENSITIVE);
-        List<Target> tp = new ArrayList<Target>();
-        for(Target t : this.ct.targets) {
-            if(pat.matcher(t.title).matches()) {
-                tp.add(t);
-            }
+        else {
+            targets = ct.getTargets(true, Pattern.compile(".*" + Pattern.quote(filter) + ".*", Pattern.CASE_INSENSITIVE));
         }
-        this.ct.targets = tp;
 
+        numFilteredTargets = targets.size();
+    }
+
+    private void sortIt(){
+        targets.sort((t1, t2) -> t1.title.compareTo(t2.title));
     }
 
     private void pageIt() {
         // Set the page total
-        this.totalPages = 1 + totalTargets / pageSize;
+        this.totalPages = 1 + targets.size() / pageSize;
+
+        // Fix page start-end:
+        this.pageStart = (page - 1) * pageSize + 1;
+        this.pageEnd = page * pageSize;
+        if(this.pageEnd > targets.size()) {
+            pageEnd = targets.size();
+        }
+
         // Limit targets to those on the current page:
-        if(ct.targets.size() > pageSize) {
+        if(targets.size() > pageSize) {
             List<Target> tp = new ArrayList<Target>();
             for(int i = (page - 1) * pageSize;
-                i < page * pageSize && i < totalTargets; i++) {
-                tp.add(ct.targets.get(i));
+                i < page * pageSize && i < targets.size(); i++) {
+                tp.add(targets.get(i));
             }
-            ct.targets = tp;
-            // Fix page start-end:
-            this.pageStart = (page - 1) * pageSize + 1;
-            this.pageEnd = page * pageSize;
-            if(this.pageEnd > totalTargets) {
-                pageEnd = totalTargets;
-            }
+
+            targets = tp;
         }
+
         // Reduce range of pages viewed when number is large.
         this.pagerStart = 1;
         this.pagerEnd = this.totalPages;

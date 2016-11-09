@@ -77,14 +77,16 @@ $(document).ready(function() {
 </div>
 }
 
-@if( ctv.ct.targets != null && ctv.ct.targets.size() > 0 ) {    
-<div class="collection-targets-view">
-<div class="row collection-targets-thumbnails">
-  @for( target <- ctv.ct.targets ) {
-     @targetThumbnail(target)
-  }
-</div>
-</div>
+@defining(ctv.targets) { targets =>
+    @if( targets != null && targets.size() > 0 ) {
+    <div class="collection-targets-view">
+        <div class="row collection-targets-thumbnails">
+        @for(target <- targets) {
+            @targetThumbnail(target)
+        }
+        </div>
+    </div>
+}
 
 @if( ctv.totalPages > 1 ) {
 <div class="text-center">
@@ -123,7 +125,7 @@ $(document).ready(function() {
 }
 
 <p class="text-center">
-Showing @ctv.pageStart-@ctv.pageEnd out of @ctv.totalTargets websites in this collection.
+Showing @ctv.pageStart-@ctv.pageEnd out of @ctv.numFilteredTargets websites in this collection.
 </p>
 
 }
