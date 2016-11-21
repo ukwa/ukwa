@@ -1,4 +1,4 @@
-@(title: String, scripts: Html = Html(""))(content: Html)(implicit lang: Lang)
+@(title: String, scripts: Html = Html(""), preHeader: Html = Html(""))(content: Html)(implicit lang: Lang)
 
 @import play.i18n._
 
@@ -55,7 +55,7 @@
 			</div><!-- /.nav-collapse -->
 		</nav>
 		<div class="container">
-
+            @preHeader
   <header class="page-header">
     <h1>@title</h1>
   </header>

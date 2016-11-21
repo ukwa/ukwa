@@ -1,4 +1,8 @@
+@import uk.gov.hmrc.play.breadcrumb.model.Breadcrumb
+@import uk.gov.hmrc.play.breadcrumb.model.BreadcrumbItem
+@import scala.Vector
 @(ctv: uk.bl.wa.w3act.view.CollectionTreeView, searchForm: Form[uk.bl.wa.w3act.forms.SearchForm])
+
 
 @import includes._
 
@@ -11,15 +15,18 @@ $(document).ready(function() {
 </script>
 }
 
-@main(ctv.ct.title,scripts) {
+@main(ctv.ct.title, scripts, preHeader =
+    breadcrumbTag(Http.Context.current().args.get("breadcrumb").asInstanceOf[uk.gov.hmrc.play.breadcrumb.model.Breadcrumb], showLastItem = false)) {
 
-  <div class="row">
+
+    <div class="row">
     <div class="col-md-4 col-xs-12">
 
     <p>
     @Html(ctv.ct.description)
     </p>
-    
+
+
     <table class="table table-striped">
     <thead>
     <tr><th colspan="2" class="text-center">Collection Statistics</th></tr>
@@ -31,7 +38,6 @@ $(document).ready(function() {
     @if( ! ctv.ct.publish && ctv.ct.parentId == -1 ) {
     <tr><td>Published?</td><td>No</td></tr>
     }
-    </tr>
     </tbody>
     </table>
 

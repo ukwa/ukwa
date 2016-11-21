@@ -131,6 +131,7 @@ public class SolrCollectionsDataSource implements CollectionsDataSource {
                         collectionTree.children = collections
                                 .stream()
                                 .filter(ct -> ct.parentId == collectionTree.id)
+                                .map(ct -> {ct.parent = collectionTree; return ct;})
                                 .collect(Collectors.toList());
                         collectionTree.targets = getTargets(collectionTree.id);
                         return collectionTree;

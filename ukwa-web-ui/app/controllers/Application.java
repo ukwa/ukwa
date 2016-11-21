@@ -8,6 +8,7 @@ import java.util.List;
 import play.*;
 import play.data.Form;
 import play.mvc.*;
+import uk.bl.wa.w3act.BreadcrumbFactory;
 import uk.bl.wa.w3act.CollectionTree;
 import uk.bl.wa.w3act.CollectionsDataSource;
 import uk.bl.wa.w3act.SolrCollectionsDataSource;
@@ -17,6 +18,7 @@ import uk.bl.wa.w3act.forms.SearchForm;
 import uk.bl.wa.w3act.view.CollectionTreeView;
 import views.html.*;
 
+@With(BreadcrumbFactory.class)
 public class Application extends Controller {
 
     public static CollectionsDataSource collectionsDataSource = new /*W3ACTCache()*/ SolrCollectionsDataSource();
@@ -62,7 +64,7 @@ public class Application extends Controller {
         return ok(collections.render(getAllCollections(), true));
     }
 
-    private CollectionTree findCollectionById(Long id) {
+    public static CollectionTree findCollectionById(Long id) {
         CollectionTree found = null;
         for(CollectionTree top : collectionsDataSource.getCollections().values()) {
             if(found == null) {
@@ -89,7 +91,7 @@ public class Application extends Controller {
         return redirect(controllers.routes.Application.viewCollection(id, page, pageSize, filter));
     }
 
-    public Result viewCollection(Long id, int page, int pageSize, String filter) {
+   public Result viewCollection(Long id, int page, int pageSize, String filter) {
         CollectionTree ct = findCollectionById(id);
         if(ct == null) {
             return notFound("No collection with ID " + id);

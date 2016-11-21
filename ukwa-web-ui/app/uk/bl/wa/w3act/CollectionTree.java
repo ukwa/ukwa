@@ -5,6 +5,8 @@ package uk.bl.wa.w3act;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,6 +27,7 @@ public class CollectionTree implements Serializable {
 
     public long id;
     public long parentId;
+    public CollectionTree parent;
     public String title;
     public List<CollectionTree> children = new ArrayList<CollectionTree>();
     public boolean publish;
@@ -39,12 +42,14 @@ public class CollectionTree implements Serializable {
         this.id = -1;
         this.title = "ROOT";
         for(JsonNode item : json) {
-            children.add(new CollectionTree(item, this.id));
+            children.add(new CollectionTree(item, this));
         }
     }
 
-    private CollectionTree(JsonNode json, long parent) {
-        this.parentId = parent;
+    private CollectionTree(JsonNode json, CollectionTree parent) {
+        this.parent = parent;
+        parentId = parent.id;
+
         try {
             this.id = Long.parseLong(json.get("key").textValue().replace("\"", ""));
         }
@@ -55,9 +60,17 @@ public class CollectionTree implements Serializable {
         this.title = json.get("title").textValue();
         if(json.has("children")) {
             for(JsonNode item : json.get("children")) {
-                this.children.add(new CollectionTree(item, this.id));
+                this.children.add(new CollectionTree(item, this));
             }
         }
+    }
+
+    public long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(long parentId) {
+        this.parentId = parentId;
     }
 
     public long getId() {
@@ -201,5 +214,23 @@ public class CollectionTree implements Serializable {
             }
         }
         return num;
+    }
+
+    /**
+     * Gets a List of all ancestors and this CollectionTree, ordered from the top of the hierarchy
+     * @return A List of CollectionTrees
+     */
+    public List<CollectionTree> getAllAncestors(){
+        List<CollectionTree> ancestors = null;
+
+        if(parent == null){
+            ancestors = Collections.singletonList(this);
+        }
+        else {
+            ancestors = Stream.concat(parent.getAllAncestors().stream(), Stream.of(this))
+                    .collect(Collectors.toList());
+        }
+
+        return ancestors;
     }
 }
