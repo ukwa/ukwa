@@ -17,10 +17,7 @@ play.ws.timeout.idle=1000000
 # The total time you accept a request to take (it will be interrupted even if the remote host is still sending data) (default is 120 seconds).
 play.ws.timeout.request=1000000
 
-w3act.url = ""
-w3act.username = ""
-w3act.password = ""
-w3act.cache.tmp.dir = 
+solr.url=http://localhost:8983/solr/collections
 
 wayback.prefix = "http://www.webarchive.org.uk/wayback-beta/archive"
 #screenshotter.prefix = "http://webrender.bl.uk/webtools/image"
