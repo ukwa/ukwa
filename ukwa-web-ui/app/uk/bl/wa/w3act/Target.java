@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang.StringUtils;
 
 import play.Logger;
@@ -26,7 +27,9 @@ public class Target implements Serializable {
 
 	private ISO8601DateFormat df = new ISO8601DateFormat();
 
+	@JsonProperty
 	public long id;
+	@JsonProperty
 	public String title;
 	public String description;
 	public String language;
@@ -129,7 +132,8 @@ public class Target implements Serializable {
 	    
 	}
 
-	public String getPlaybackUrl() { 
+	@JsonProperty("playbackUrl")
+	public String getPlaybackUrl() {
 	    return WaybackClient.getPlaybackUrlFor(this);
 	}
 

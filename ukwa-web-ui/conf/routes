@@ -13,5 +13,9 @@ POST    /collection/:id/submit      controllers.Application.submitCollectionView
 GET     /target/:id                 controllers.Application.viewTarget(id:Long)
 GET     /screenshot/*url            controllers.ScreenshotProxyController.screenshot(url:String)
 
+GET     /api/collection/list        controllers.ApiController.collections(start:play.libs.F.Option[java.lang.Long], count:play.libs.F.Option[java.lang.Long])
+GET     /api/collection/:id         controllers.ApiController.collection(id:Long)
+GET     /api/target/:id             controllers.ApiController.target(id:Long)
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 
 /**
@@ -23,15 +25,18 @@ public class CollectionTree implements Serializable {
 
     private static final long serialVersionUID = 3152090496542715791L;
 
-    List<Target> targets = new ArrayList<Target>();
-
+    @JsonProperty
     public long id;
     public long parentId;
     public CollectionTree parent;
+    @JsonProperty
     public String title;
     public List<CollectionTree> children = new ArrayList<CollectionTree>();
     public boolean publish;
     public String description;
+
+    @JsonProperty
+    List<Target> targets = new ArrayList<Target>();
 
     protected CollectionTree() {
         this.id = -1;
