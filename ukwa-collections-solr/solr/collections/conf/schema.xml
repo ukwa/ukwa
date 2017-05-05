@@ -49,7 +49,7 @@
 
 
     <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
-    <field name="_version_" type="long" indexed="true" stored="true" multiValued="false"/>
+    <field name="_version_" type="long" indexed="true" stored="false" multiValued="false"/>
     <field name="_root_" type="string" indexed="true" stored="false" docValues="false" />
     <field name="_text_" type="text_general" indexed="true" stored="false" multiValued="true"/>
     <copyField source="*" dest="_text_"/>
@@ -930,6 +930,6 @@
   <field name="type" type="string" indexed="true" multiValued="false"/>
   <field name="url" type="string" indexed="false" multiValued="false"/>
   <field name="additionalUrl" type="string" indexed="false" multiValued="true"/>
-  <field name="licenses" type="tlong" indexed="false" multiValued="true"/>
+  <field name="licenses" type="string" indexed="false" multiValued="true"/>
 </schema>
 

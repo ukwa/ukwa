@@ -1,4 +1,4 @@
-FROM solr:5
+FROM solr:6
 
 USER root
 
